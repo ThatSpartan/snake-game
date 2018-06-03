@@ -205,7 +205,7 @@ function main_loop() {
     for (let row = 0; row < 10; row++) {
         for (let column = 0; column < 10; column++) {
 
-            context.fillRect(row * 35, column * 35, 30, 30); // space * (box width + offset)
+            context.fillRect(row * 32, column * 32, 30, 30); // space * (box width + offset)
             
         }
     }
@@ -219,12 +219,12 @@ function main_loop() {
             context.fillStyle = '#ffa500'; // snake body color
         }
 
-        context.fillRect(body.x * 35, body.y * 35, 30, 30);
+        context.fillRect(body.x * 32, body.y * 32, 30, 30);
         
     }
 
     context.fillStyle = '#ff6ff2';
-    context.fillRect(fruit.x * 35, fruit.y * 35, 30, 30);
+    context.fillRect(fruit.x * 32, fruit.y * 32, 30, 30);
 
     setTimeout(() => {
         // console.log('new frame');
