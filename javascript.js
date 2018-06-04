@@ -1,238 +1,269 @@
-var canvas = document.createElement('canvas');
-canvas.width = 600;
-canvas.height = 600;
-document.body.appendChild(canvas);
+var canvas = document.createElement("canvas");
+var context = canvas.getContext("2d");
 
-const fps = 5;
+const fps = 3;
 
-var context = canvas.getContext('2d');
 
 let controller = {
 
     select: 'right',
 
-    KeyPressed : (event) => {
+    KeyPressed: event => {
 
-		switch (event.keyCode) {
+    // console.log(event.keyCode);
 
-			case 65: // left key
-				controller.select = 'left';
-				break;
+        switch (event.keyCode) {
 
-			case 87: // up key
-				controller.select = 'up';
-				break;
-
-			case 68: // right key
-				controller.select = 'right';
+            case 65: // left key
+                controller.select = "left";
                 break;
-                
+
+            case 87: // up key
+                controller.select = "up";
+                break;
+
+            case 68: // right key
+                controller.select = "right";
+                break;
+
             case 83: // down key
-                controller.select = 'down';
+                controller.select = "down";
                 break;
 
-		}
+            case 32: // space for testing
+                main_loop();
+                break;
+
+        }
+
+    }
+
+};
+
+let display = {
+
+    colors: {
+        head: '#ff7f00',
+        body: '#ffa500',
+        empty: '#868686',
+        fruit: '#ff6ff2',
+    },
+
+    block_size: 15,
+    space: 2,
+
+    Length(amount) { return amount * (this.block_size + this.space); },
+
+    DrawSquare(x, y, size, color) {
+
+        context.fillStyle = color;
+        context.fillRect(x, y, size, size);
+
+    },
+
+    DrawBoard(width, height) {
+
+        for(let row = 0; row < width; row++) {
+            for(let column = 0; column < height; column++) {
+
+                this.DrawSquare(this.Length(row), this.Length(column), this.block_size, this.colors.empty);
+
+            }
+        }
+        
+    },
+
+    DrawPlayer(player) {
+
+        this.DrawSquare(this.Length(player.body[0].x), this.Length(player.body[0].y), this.block_size, this.colors.head);
+
+        for(let p = 1; p < player.body.length; p++) {
+            
+            let piece = player.body[p];
+
+            this.DrawSquare(this.Length(piece.x), this.Length(piece.y), this.block_size, this.colors.body);
+
+        }
+
+    },
+
+    DrawFruit(fruit) {
+
+        this.DrawSquare(this.Length(fruit.x), this.Length(fruit.y), this.block_size, this.colors.fruit);
 
     },
 
 };
 
+let game = {
+
+    width: 10,
+    height: 10,
+
+};
+
 let fruit = {
 
-    x: 4,
-    y: 6,
+    max_height: 0,
+    max_width: 0,
 
-    NewFruit: () => {
+    x: 0,
+    y: 0,
 
-        let x, y, min, max;
+    NewFruit() {
 
-        min = 0;
-        max = 9;
+        fruit.x = this.NewLoc(this.max_width);
+        fruit.y = this.NewLoc(this.max_height);
 
-        x = Math.floor(Math.random() * (max - min + 1)) + min;
-        y = Math.floor(Math.random() * (max - min + 1)) + min;
+    },
 
-        fruit.x = x;
-        fruit.y = y;
+    NewLoc(max, min=0) {
 
-    }
+        return Math.floor(Math.random() * (max - min)) + min;
+
+    },
 
 };
 
 let player = {
 
-    width : 30,
-    height : 30,
+    dx: 0,
+    dy: 0,
 
-    body : [
-        { x: 0, y: 0 },
-        { x: 0, y: 1 },
-        { x: 0, y: 2 },
-    ]
+    body: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 0, y: 3 }, { x: 0, y: 4 }, { x: 0, y: 5 }, { x: 0, y: 6 },],
+
+    get new_x() { return this.body[0].x + this.dx; },
+    get new_y() { return this.body[0].y + this.dy; },
+    get new_coords() { return { x: this.new_x, y: this.new_y }; },
+    get x() { return this.body[0].x; },
+    get y() { return this.body[0].y; },
+
+    // get availables() { return }
+
+    add() {
+        this.body.unshift({ x: this.new_x, y: this.new_y });
+    },
+
+    remove() {
+        this.body.pop();
+    },
+
+    move() {
+        this.add();
+        this.remove();
+    },
+
+    eat() {
+        this.add();
+        fruit.NewFruit();
+    },
 
 };
 
-function wall(x, y) { // wall or player or fruit
-    console.log('wall');
-    console.log(x + ' . ' + y);
+let collisions = {
+    
+    Main(player, game, fruit) {
 
-    if (x >= 10 || y >= 10 || x < 0 || y < 0) { // check wall colliion
-        console.log('return true');
+        if (!collisions.Wall(player, game) && !collisions.Player(player)) {
 
-        return true;
-
-    }
-
-    for (let index = 0; index < player.body.length; index++) { // check body collision
-        const body = player.body[index];
-        
-        if (body.x == x && body.y == y) {
-            
-            return true;
+            if (collisions.Fruit(player, fruit)) {
+                player.eat();
+            } else {
+                player.move();
+            }
 
         }
 
-    }
+    },
 
-    let p_head = player.body[0];
-    if (x == fruit.x && y == fruit.y) {
-        
-        fruit.NewFruit();
+    Fruit(player, fruit) {
 
-        player.body.unshift({ x: x, y: y, });
+        if (player.new_x == fruit.x && player.new_y == fruit.y) { return true; }
 
-        return true;
+        return false;
 
-    }
+    },
 
-    return false;
+    Wall(player, game) {
 
-}
+        if (    player.new_x >= game.width ||
+                player.new_x < 0 ||
+                player.new_y >= game.height ||
+                player.new_y < 0
+        ) { return true; }
+
+        return false;
+
+    },
+
+    Player(player) {
+
+        let current;
+        for(let index = 0; index < player.body.length; index++) {
+
+            current = player.body[index];
+
+            if (current.x == player.new_x && current.y == player.new_y) { return true; }
+
+        }
+
+        return false;
+
+    },
+
+};
 
 function main_loop() {
-
-    let x, y;
-
     switch (controller.select) {
-
         case 'right':
 
-            // console.log('right');
-
-            x = player.body[0].x;
-            y = player.body[0].y;
-
-            if (wall(x+1, y)) {
-                console.log('true');
-                break;
-            }
-
-            x++;
-            
-            player.body.unshift({   x: x, 
-                                    y: y, });
-
-            player.body.pop();
-
-            break;
-
-        case 'down':
-
-            // console.log('down');
-
-            x = player.body[0].x;
-            y = player.body[0].y;
-
-            if (wall(x, y+1)) {
-                break;
-            }
-
-            y++;
-            
-            player.body.unshift({   x: x, 
-                                    y: y, });
-
-            player.body.pop();
+            player.dx = 1;
+            player.dy = 0;
 
             break;
 
         case 'left':
 
-            // console.log('left');
-
-            x = player.body[0].x;
-            y = player.body[0].y;
-
-            if (wall(x-1, y)) {
-                break;
-            }
-
-            x--;
+            player.dx = -1;
+            player.dy = 0;
             
-            player.body.unshift({   x: x, 
-                                    y: y, });
-
-            player.body.pop();
-
             break;
-
+            
         case 'up':
-
-            // console.log('down');
-
-            x = player.body[0].x;
-            y = player.body[0].y;
-
-            if (wall(x, y-1)) { // wall or player
-                break;
-            }
-
-            y--;
             
-            player.body.unshift({   x: x, 
-                                    y: y, });
-
-            player.body.pop();
-
+            player.dx = 0;
+            player.dy = -1;
+            
             break;
-
-    }
-
-
-    context.fillStyle = '#868686'; // empty color
-    context.fillRect(0, 0, 30, 30); // test
-
-    for (let row = 0; row < 10; row++) {
-        for (let column = 0; column < 10; column++) {
-
-            context.fillRect(row * 32, column * 32, 30, 30); // space * (box width + offset)
             
-        }
+        case 'down':
+            
+            player.dx = 0;
+            player.dy = 1;
+            
+            break;
+            
     }
 
-    for (let index = 0; index < player.body.length; index++) {
-        const body = player.body[index];
+    collisions.Main(player, game, fruit);
 
-        if (index == 0) {
-            context.fillStyle = '#ff7f00'; // snake head color
-        } else {
-            context.fillStyle = '#ffa500'; // snake body color
-        }
+    display.DrawBoard(game.width, game.height);
+    display.DrawPlayer(player);
+    display.DrawFruit(fruit);
 
-        context.fillRect(body.x * 32, body.y * 32, 30, 30);
-        
-    }
-
-    context.fillStyle = '#ff6ff2';
-    context.fillRect(fruit.x * 32, fruit.y * 32, 30, 30);
-
-    setTimeout(() => {
-        // console.log('new frame');
-        window.requestAnimationFrame(main_loop);
-    }, 1000 / fps);
-
+  setTimeout(() => {
+      console.log('new frame');
+      window.requestAnimationFrame(main_loop);
+  }, 1000 / fps);
 }
 
-window.addEventListener('keydown', controller.KeyPressed);
-window.addEventListener('keyup', controller.KeyPressed);
+canvas.width = display.Length(game.width);
+canvas.height = display.Length(game.height);
+document.body.appendChild(canvas);
+
+fruit.max_width = game.width;
+fruit.max_height = game.height;
+fruit.NewFruit();
+
+window.addEventListener("keydown", controller.KeyPressed);
 window.requestAnimationFrame(main_loop);
