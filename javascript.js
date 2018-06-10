@@ -1,28 +1,3 @@
-class Controller {
-
-	constructor() {
-
-		this.direction = 'right';
-
-		document.addEventListener('keydown', this.KeyPressed);
-
-	}
-
-	KeyPressed(event) {
-
-		switch (event.keyCode) {
-
-			case 87: this.direction = 'up'; break; // up
-			case 83: this.direction = 'down'; break; // down
-			case 68: this.direction = 'right'; break; // right
-			case 65: this.direction = 'left'; break; // left
-
-		}
-
-	}
-
-}
-
 class Display {
 
 	constructor(game) {
@@ -100,12 +75,18 @@ class Player {
 
 		this.body = [ { x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2, }, { x: 0, y: 3, }, { x: 1, y: 3, } ];
 
-		this.dx = 1;
-		this.dy = 0;
+		this.move_x = 1;
+		this.move_y = 0;
 
 	}
 
-	get NewHead() { return { x: this.body[0].x + this.dx, y: this.body[0].y + this.dy }; }
+	get move_x() { return this.dx; }
+	get move_y() { return this.dy; }
+
+	set move_x(x) { this.dx = x; }
+	set move_y(y) { this.dy = y; }
+
+	get NewHead() { return { x: this.body[0].x + this.move_x, y: this.body[0].y + this.move_y }; }
 	get SnakeBody() { return this.body.map(z => z.x + z.y * this.game.width); }
 
 	Move() {
@@ -147,7 +128,12 @@ class Collision {
 
 	ColliedWithWall(player, game_dimention) {
 
-		return (player.NewHead.x == game_dimention.x && player.NewHead.y == game_dimention.y);
+		return ( 	player.NewHead.x >= game_dimention.x ||
+				 	player.NewHead.y >= game_dimention.y ||
+					player.NewHead.x < 0 || player.NewHead.y < 0
+						) ? true : false;
+
+
 
 	}
 
@@ -173,15 +159,16 @@ class Collision {
 
 class Game {
 
-	constructor() {
+	constructor(control) {
 
 		this.width = 10;
 		this.height = 10;
+		this.fps = 1;
 
+		this.control = control;
 		this.player = new Player(this);
 		this.fruit = new Fruit();
 		this.display = new Display(this);
-		this.controller = new Controller();
 		this.collision = new Collision();
 
 	}
@@ -234,43 +221,16 @@ Game.prototype.GetInt = function(max=0, min=0) {
 
 };
 
-Game.prototype.SetDirection = function() {
-
-	switch (this.controller.direction) {
-
-		case 'up':
-			this.player.dx = 0;
-			this.player.dy = -1;
-			break;
-	
-		case 'down':
-			this.player.dx = 0;
-			this.player.dy = 1;
-			break;
-
-		case 'right':
-			this.player.dx = 1;
-			this.player.dy = 0;
-			break;
-
-		case 'left':
-			this.player.dx = -1;
-			this.player.dy = 0;
-			break;
-		
-	}
-
-};
-
 Game.prototype.loop = function() {
-console.log('hey');
+
 	this.display.DrawBoard();
 	this.display.DrawPlayer();
 	this.display.DrawFruit();
 
-	this.SetDirection();
+	this.player.move_x = control.move_x;
+	this.player.move_y = control.move_y;
 
-	if ( !this.collision.ColliedWithWall( this.player, { x: this.width, y: this.height } ) || !this.collision.ColliedWithBody( this.player ) ) {
+	if ( !this.collision.ColliedWithWall( this.player, { x: this.width, y: this.height } ) && !this.collision.ColliedWithBody( this.player ) ) {
 
 		if ( this.collision.ColliedWithFruit( this.player, this.fruit ) ) {
 
@@ -285,13 +245,52 @@ console.log('hey');
 
 	}
 
-	window.requestAnimationFrame( () => { this.loop(); } );	
+	setTimeout(() => {
+		window.requestAnimationFrame( () => { this.loop(); } );
+	}, 1000 / this.fps);
 
 };
 
+let control = {
+
+	move_x: 0,
+	move_y: 0
+
+};
+
+KeyPressed = (event) => {
+console.log(event.keyCode);
+	switch (event.keyCode) {
+
+		case 87: // up
+			control.move_x = 0;
+			control.move_y = -1;
+			break;
+
+		case 83: // down
+			control.move_x = 0;
+			control.move_y = 1;
+			break;
+
+		case 68: // right
+			control.move_x = 1;
+			control.move_y = 0;
+			break;
+
+		case 65: // left
+			control.move_x = -1;
+			control.move_y = 0;
+			break;
+
+	}
+
+}
+
 let main = () => {
 
-	let game = new Game();
+	let game = new Game(control);
+
+	document.addEventListener('keydown', KeyPressed);
 
 	game.NewGame();
 
