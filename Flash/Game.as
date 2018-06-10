@@ -9,19 +9,18 @@
 		private var height;
 		private var width;
 
+		var display = display;
+		var joueur:Player = new Player();
+
 		private var listeDesCases:Array;
 		
 		public function Game(display) {
-			
-			var display = display;
 
-			var joueur:Player = new Player();
+			dir:String = 'default';
 
-			dir:string = 'default';
+			listeDesCases:Array = [];
 
-			listeDesCases:Array = new Array();
-
-			var temp:Array = new Array();
+			var temp:Array = [];
 			for (var range = 0; range < 10; range++) {
 
 				temp = new Array();
