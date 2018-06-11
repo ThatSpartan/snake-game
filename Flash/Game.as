@@ -54,7 +54,8 @@
 
 // bouger le joueur
 
-			listeDesCases.map(function(x) { x.gotoAndStop(1); });
+			//listeDesCases.map(function(x) { x.gotoAndStop(1); });
+			listeDesCases.forEach( function(x) { x.gotoAndStop(1); });
 
 			trace(joueur.getBody);
 
