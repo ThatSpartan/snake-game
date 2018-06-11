@@ -56,7 +56,7 @@
 
 			listeDesCases.map(function(x) { x.gotoAndStop(1); });
 
-			trace(joueur.snake_body);
+			trace(joueur.getBody);
 
 			//joueur.body.map(function(c) {
 			//	listeDesCases[c.x].gotoAndStop(2);
