@@ -58,9 +58,7 @@
 
 			trace(joueur.getBody);
 
-			//joueur.body.map(function(c) {
-			//	listeDesCases[c.x].gotoAndStop(2);
-			//});			//erreur 1178
+			joueur.getBody.map(function(c) { listeDesCases[c.x].gotoAndStop(2); });
 			//listeDesCases.gotoAndStop( joueur.body[0] );			erreur ..
 
 		}
