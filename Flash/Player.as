@@ -10,7 +10,7 @@
 
 		}
 
-		public function get getBody() { return body; }
+		public function get getBody() { return 'hello there buddy'; }
 		public function set setBody(val) { body = val; }
 
 		public function Init() {
