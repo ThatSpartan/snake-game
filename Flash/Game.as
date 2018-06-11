@@ -23,7 +23,7 @@
 			var temp = [];
 			for (var range = 0; range < 10; range++) {
 
-				temp = new Array();
+				temp = [];
 				for	(var colonne = 0; colonne < 10; colonne++) {
 				
 					var c:Carre = new Carre();

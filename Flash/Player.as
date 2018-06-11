@@ -10,6 +10,8 @@
 
 		}
 
+		public function get body() { return body; }
+
 		public function Init() {
 
 			// body = [2, 1, 0]; // changer pour objet
