@@ -10,7 +10,7 @@
 
 		}
 
-		public function get body() { return body; }
+		public function get snake_body() { return body; }
 
 		public function Init() {
 
