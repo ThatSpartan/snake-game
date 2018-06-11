@@ -56,9 +56,11 @@
 
 			listeDesCases.map(function(x) { x.gotoAndStop(1); });
 
-			joueur.body.map(function(c) {
-				listeDesCases[c.x].gotoAndStop(2);
-			});			//erreur 1178
+			trace(joueur.body);
+
+			//joueur.body.map(function(c) {
+			//	listeDesCases[c.x].gotoAndStop(2);
+			//});			//erreur 1178
 			//listeDesCases.gotoAndStop( joueur.body[0] );			erreur ..
 
 		}
