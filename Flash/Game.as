@@ -16,11 +16,11 @@
 		
 		public function Game(display) {
 
-			dir:String = 'default';
+			dir = 'default';
 
-			listeDesCases:Array = [];
+			listeDesCases = [];
 
-			var temp:Array = [];
+			var temp = [];
 			for (var range = 0; range < 10; range++) {
 
 				temp = new Array();
@@ -44,7 +44,7 @@
 
 		public function NouvellePartie() {
 
-			player.Init();
+			joueur.Init();
 
 
 
@@ -56,19 +56,22 @@
 
 			listeDesCases.map(function(x) { x.gotoAndStop(1); });
 
-			joueur.body.map(function(c) { listeDesCases[c.x].gotoAndStop(2); });
-			listeDesCases.gotoAndStop( joueur.body[0] );
+			//joueur.body.map(function(c) { listeDesCases[c.x].gotoAndStop(2); });			erreur 1178
+			//listeDesCases.gotoAndStop( joueur.body[0] );			erreur ..
 
 		}
 
 		public function ChangerDirection(event) {
 // tester que ça crée pas une nouvelle instance
+
+trace(event.keyCode);
+
 			switch (event.keyCode) {
 
-				case 1: console.log('haut');	dir = 'haut'; 	break;
-				case 2: console.log('bas');		dir = 'bas'; 	break;
-				case 3: console.log('droite');	dir = 'droite'; break;
-				case 4: console.log('gauche');	dir = 'gauche'; break;
+				case 87: /*trace('haut');*/		dir = 'haut'; 	break;
+				case 83: /*trace('bas');*/		dir = 'bas'; 	break;
+				case 68: /*trace('droite');*/	dir = 'droite'; break;
+				case 65: /*trace('gauche');*/	dir = 'gauche'; break;
 
 			}
 

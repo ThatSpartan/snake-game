@@ -5,11 +5,16 @@ Date : 15 mai 2018
 Description : Un jeu de snake.
 */
 
+/*
+Note : Désactiver la fonction racourcis de clavier dans l'animation pour que les touches de claviers fonctionnent.
+*/
+
 package {
 
     // importations
     import flash.display.MovieClip;
-    import flash.events.MouseEvent;
+    import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	
 	import Game;/*
 	import Carre;*/
@@ -33,7 +38,16 @@ package {
 			
             // event listeners
             //btnTrier.addEventListener(MouseEvent.CLICK, Trier)
-            addEventListener('keypress', game.ChangerDirection);
+            stage.addEventListener(KeyboardEvent.KEY_DOWN, game.ChangerDirection);
+			//stage.addEventListener(KeyboardEvent.KEY_DOWN, mouseclick);
+
+        }
+		
+		public function mouseclick(event:KeyboardEvent)
+		{
+			
+			trace('event');
+			trace(event.keyCode);
 
         }
 
