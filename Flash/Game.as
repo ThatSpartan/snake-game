@@ -61,8 +61,8 @@
 
 			trace(joueur.getBody());
 
-			joueur.getBody.map(function(c) { listeDesCases[c.x].gotoAndStop(2); });
-			joueur.getBody.map(function(c) { trace(c); });
+			//joueur.getBody.map(function(c) { listeDesCases[c.x].gotoAndStop(2); });
+			//joueur.getBody.map(function(c) { trace(c); });
 			listeDesCases[0][0].gotoAndStop(2);
 			//listeDesCases.gotoAndStop( joueur.body[0] );			erreur ..
 
