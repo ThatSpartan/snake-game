@@ -72,10 +72,10 @@ trace(event.keyCode);
 
 			switch (event.keyCode) {
 
-				case 87: /*trace('haut');*/		dir = 'haut'; 	break;
-				case 83: /*trace('bas');*/		dir = 'bas'; 	break;
-				case 68: /*trace('droite');*/	dir = 'droite'; break;
-				case 65: /*trace('gauche');*/	dir = 'gauche'; break;
+				case 87: trace('haut');		dir = 'haut'; 	break;
+				case 83: trace('bas');		dir = 'bas'; 	break;
+				case 68: trace('droite');	dir = 'droite'; break;
+				case 65: trace('gauche');	dir = 'gauche'; break;
 
 			}
 
