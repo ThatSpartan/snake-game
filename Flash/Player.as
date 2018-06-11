@@ -6,7 +6,7 @@
 
 		public function Player() {
 
-			//body = [];
+			body = [];
 
 		}
 
