@@ -6,9 +6,11 @@
 
 		public function Player() {
 
-			//body = [];
+			body = [];
 
 		}
+
+		public function get body() { return body; }
 
 		public function Init() {
 
