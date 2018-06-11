@@ -39,6 +39,8 @@
 				listeDesCases.push(temp);
 				
 			}
+			
+			NouvellePartie();
 				
 		}
 
@@ -46,7 +48,7 @@
 
 			joueur.Init();
 
-
+			Update();
 
 		}
 
@@ -56,11 +58,11 @@
 
 			listeDesCases.map(function(x) { x.gotoAndStop(1); });
 
-			trace(joueur.getBody);
+			trace(joueur.getBody());
 
 			joueur.getBody.map(function(c) { listeDesCases[c.x].gotoAndStop(2); });
 			joueur.getBody.map(function(c) { trace(c); });
-			listeDesCases[7].gotoAndStop(2);
+			listeDesCases[0][0].gotoAndStop(2);
 			//listeDesCases.gotoAndStop( joueur.body[0] );			erreur ..
 
 		}
