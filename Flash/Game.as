@@ -59,7 +59,7 @@
 			//listeDesCases.map(function(x) { x.gotoAndStop(1); });
 			listeDesCases.forEach( function(x) { 
 				x.forEach( function (y) { 
-					gotoAndStop(1); 
+					y.gotoAndStop(1); 
 				});
 			});
 
