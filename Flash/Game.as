@@ -6,11 +6,12 @@
 		// canvas height: 400
 
 		private var dir;
-		private var height;
-		private var width;
+		private var height	= 550;
+		private var width	= 400;
+		private const SIZE	= 15;
 
 		var display = display;
-		var joueur:Player = new Player();
+		var joueur:Player = new Player(SIZE);
 
 		private var listeDesCases:Array;
 		
@@ -29,8 +30,8 @@
 					var c:Carre = new Carre();
 
 					c.stop();
-					c.x = range * (15 + 2); // + center (largeur: 550, hauteur: 400)
-					c.y = colonne * (15 + 2); // ..
+					c.x = range * (SIZE + 2); // + center (largeur: 550, hauteur: 400)
+					c.y = colonne * (SIZE + 2); // ..
 
 					temp.push(c);
 					display.addChild(c);
@@ -39,6 +40,8 @@
 				listeDesCases.push(temp);
 				
 			}
+
+			trace(listeDesCases);
 			
 			NouvellePartie();
 				
@@ -57,11 +60,11 @@
 // bouger le joueur
 
 			//listeDesCases.map(function(x) { x.gotoAndStop(1); });
-			listeDesCases.forEach( function(x) { 
-				x.forEach( function (y) { 
-					y.gotoAndStop(1); 
-				});
-			});
+			//listeDesCases.forEach( function(x) { 
+			//	x.forEach( function (y) { 
+			//		y.gotoAndStop(1); 
+			//	});
+			//});
 
 			trace(joueur.getBody());
 

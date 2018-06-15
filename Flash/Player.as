@@ -2,11 +2,14 @@
 	
 	public class Player {
 		
-		var body;
+		var body, size;
 
-		public function Player() {
+		var direction = 
+
+		public function Player(size) {
 
 			body = [];
+			size = size;
 
 		}
 
@@ -15,13 +18,16 @@
 
 		public function Init() {
 
-			// body = [2, 1, 0]; // changer pour objet
-
 			setBody = [ {x: 2, y: 0}, {x: 1, y: 0}, {x: 0, y: 0} ];
 
 		}
 
-		
+		public function BougerHaut() {}
+		public function BougerBas() {}
+		public function BougerDroite() {}
+		public function BougerGauche() {}
+
+		//public function get 
 
 	}
 
