@@ -60,11 +60,19 @@
 // bouger le joueur
 
 			//listeDesCases.map(function(x) { x.gotoAndStop(1); });
+<<<<<<< HEAD
 			//listeDesCases.forEach( function(x) { 
 			//	x.forEach( function (y) { 
 			//		y.gotoAndStop(1); 
 			//	});
 			//});
+=======
+			listeDesCases.forEach( function(x) { 
+				x.forEach( function (y) { 
+					y.gotoAndStop(1); 
+				});
+			});
+>>>>>>> 94b237714e8724459847dbc5cdf6e18bc921be2c
 
 			trace(joueur.getBody());
 
