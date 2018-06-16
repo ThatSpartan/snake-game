@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<XML>
+
+	<my-list>
+		
+		
+		<list-item>
+			<item-color>FFFFFF</item-color>
+			<item-label>Aimee Girvan</item-label>
+		</list-item>
+		<list-item>
+			<item-color>EEEEEE</item-color>
+			<item-label>Bill Gates</item-label>
+		</list-item>
+		<list-item>
+			<item-color>E1E1E1</item-color>
+			<item-label>Steve Jobs</item-label>
+		</list-item>
+
+
+	</my-list>
+
+</XML>
