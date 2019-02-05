@@ -233,6 +233,51 @@ function main_loop() {
 
 }
 
+var xDown = null;
+var yDown = null;
+
+function getTouches(evt) {
+    return evt.touches;
+}
+
+function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];
+    xDown = firstTouch.clientX;
+    yDown = firstTouch.clientY;
+}
+
+function handleTouchMove(evt) {
+    if ( !xDown || !yDown ) {
+        return;
+    }
+
+    let xUp = evt.touches[0].clientX;
+    let yUp = evt.touches[0].clientY;
+
+    let xDiff = xDown - xUp;
+    let yDiff = yDown - yUp;
+
+    if ( Math.abs( xDiff) > Math.abs( yDiff) ){
+        if (xDiff > 0) {
+            // left
+            controller.select = 'left';
+        } else {
+            // right
+            controller.select = 'right';
+        }
+    } else {
+        if (yDiff > 0) {
+            // up
+            controller.select = 'up';
+        } else {
+            // down
+            controller.select = 'down';
+        }
+    }
+}
+
 window.addEventListener('keydown', controller.KeyPressed);
 window.addEventListener('keyup', controller.KeyPressed);
+window.addEventListener('touchstart', handleTouchStart, false);
+window.addEventListener('touchmove', handleTouchMove, false);
 window.requestAnimationFrame(main_loop);
