@@ -1,0 +1,24 @@
+html, body {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    min-height: 100%;
+    overflow: hidden;
+    position: absolute;
+}
+
+body {
+    position: fixed;
+}
+
+#end-msg {
+    position: fixed;
+    top: 30pt;
+    left: 10pt;
+    background-color: black;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    padding: 10pt;
+    cursor: pointer;
+}

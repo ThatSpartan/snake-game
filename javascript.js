@@ -8,6 +8,7 @@ const fps = 5;
 var context = canvas.getContext('2d');
 
 let controller = {
+    end: false,
 
     select: 'right',
 
@@ -72,6 +73,32 @@ let player = {
 
 };
 
+function set_end_msg() {
+    let end_msg = document.createElement("p");
+    end_msg.innerHTML = "Do you want to play again?";
+    end_msg.id = "end-msg";
+    document.body.appendChild(end_msg);
+    end_msg.addEventListener("click", new_game);
+}
+function end_game() {
+
+    document.getElementById("end-msg").style.display = "block";
+    controller.end = true;
+
+}
+function new_game() {
+
+    document.getElementById("end-msg").style.display = "none";
+    controller.end = false;
+
+    player.body = [
+        { x: 0, y: 0 },
+        { x: 0, y: 1 },
+        { x: 0, y: 2 },
+    ]
+
+}
+
 function wall(x, y) { // wall or player or fruit
     console.log('wall');
     console.log(x + ' . ' + y);
@@ -108,7 +135,7 @@ function wall(x, y) { // wall or player or fruit
     return false;
 
 }
-
+//fixme: problem with controller.end
 function main_loop() {
 
     let x, y;
@@ -122,8 +149,8 @@ function main_loop() {
             x = player.body[0].x;
             y = player.body[0].y;
 
-            if (wall(x+1, y)) {
-                console.log('true');
+            if (wall(x+1, y) || controller.end) {
+                end_game();
                 break;
             }
 
@@ -143,7 +170,8 @@ function main_loop() {
             x = player.body[0].x;
             y = player.body[0].y;
 
-            if (wall(x, y+1)) {
+            if (wall(x, y+1) || controller.end) {
+                end_game();
                 break;
             }
 
@@ -163,7 +191,8 @@ function main_loop() {
             x = player.body[0].x;
             y = player.body[0].y;
 
-            if (wall(x-1, y)) {
+            if (wall(x-1, y) || controller.end) {
+                end_game();
                 break;
             }
 
@@ -183,7 +212,8 @@ function main_loop() {
             x = player.body[0].x;
             y = player.body[0].y;
 
-            if (wall(x, y-1)) { // wall or player
+            if (wall(x, y-1) || controller.end) { // wall or player
+                end_game();
                 break;
             }
 
@@ -233,6 +263,9 @@ function main_loop() {
 
 }
 
+
+// touch events
+
 var xDown = null;
 var yDown = null;
 
@@ -275,6 +308,10 @@ function handleTouchMove(evt) {
         }
     }
 }
+
+set_end_msg();
+
+// events listeners
 
 window.addEventListener('keydown', controller.KeyPressed);
 window.addEventListener('keyup', controller.KeyPressed);
